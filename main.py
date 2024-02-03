@@ -25,9 +25,9 @@ def home():
     return render_template("index.html", blogs=blogs)
 
 
-@app.route("/blog/<int:id>")
-def blog(id):
-    return f"<h1>This is Blog {id}</h1>"
+@app.route("/blog/<int:blog_id>")
+def blog(blog_id):
+    return f"<h1>This is Blog {blog_id}</h1>"
 
 
 app.run(debug=True)
