@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, redirect, render_template, url_for
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -30,5 +30,11 @@ def home():
 def blog(blog_id):
     return f"<h1>This is Blog {blog_id}</h1>"
 
+@app.route('/blog/create')
+def create_blog():
+    blog = Blogs(title='Blog 1', subtitle='Subtitle of blog 1', thumbnail='img11.jpg')
+    db.session.add(blog)
+    db.session.commit()
+    return redirect(url_for('home'))
 
 app.run(debug=True)
