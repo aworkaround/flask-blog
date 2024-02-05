@@ -1,47 +1,47 @@
-{% extends "base.html" %}
-
-{% block main %}
+{% extends "base.html" %} {% block main %}
 
 <!-- Banner -->
 <div id="banner-wrapper">
-  <div id="banner" class="box container">
-    <div class="row">
-      <div class="col-7 col-12-medium">
-        <h2>Hi. This is FLIO.</h2>
-        <p>It's a free Blogging website by Aworkaround</p>
-      </div>
-      <div class="col-5 col-12-medium">
-        <ul>
-          <li><a href="#" class="button large icon solid fa-arrow-circle-right">Register Now</a></li>
-          <li><a href="#" class="button alt large icon solid fa-question-circle">Login</a></li>
-        </ul>
-      </div>
+    <div id="banner" class="box container">
+        <div class="row">
+            <div class="col-7 col-12-medium">
+                <h2>Hi. This is FLIO.</h2>
+                <p>It's a free Blogging website by Aworkaround</p>
+            </div>
+            <div class="col-5 col-12-medium">
+                <ul>
+                    <li><a href="#" class="button large icon solid fa-arrow-circle-right">Register Now</a></li>
+                    <li><a href="#" class="button alt large icon solid fa-question-circle">Login</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 
 <!-- Features -->
 <div id="features-wrapper">
-  <div class="container">
-    <div class="row">
-      {% for item in blogs %}
-      <!-- Box -->
-      <div class="col-4 col-12-medium">
-        <section class="box feature">
-          <a href="/blog/{{ item.id }}" class="image featured"><img src="{{ url_for('static', filename='images/' + item.thumbnail) }}" alt="" /></a>
-          <div class="inner">
-            <header>
-              <h2>{{ item.title }}</h2>
-              <p>{{ item.subtitle }}</p>
-            </header>
-            <p>{{ item.description }}</p>
-          </div>
-        </section>
-      </div>
-      {% endfor %}
+    <div class="container">
+        <div class="row">
+            {% for item in blogs %}
+            <!-- Box -->
+            <div class="col-4 col-12-medium">
+                <section class="box feature">
+                    <a href="/blog/{{ item.id }}" class="image featured"
+                        ><img src="{{ url_for('static', filename='images/' + item.thumbnail) }}" alt=""
+                    /></a>
+                    <div class="inner">
+                        <header>
+                            <h2>{{ item.title }}</h2>
+                            <p>{{ item.subtitle }}</p>
+                            <a href="{{url_for('delete_blog', blog_id=item.id)}}" style="color: red">Delete</a>
+                        </header>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </section>
+            </div>
+            {% endfor %}
+        </div>
     </div>
-  </div>
 </div>
-
 
 {% endblock %}

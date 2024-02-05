@@ -30,11 +30,23 @@ def home():
 def blog(blog_id):
     return f"<h1>This is Blog {blog_id}</h1>"
 
-@app.route('/blog/create')
+
+@app.route("/blog/create")
 def create_blog():
-    blog = Blogs(title='Blog 1', subtitle='Subtitle of blog 1', thumbnail='img11.jpg')
+    blog = Blogs(title="Blog 1", subtitle="Subtitle of blog 1", thumbnail="img11.jpg")
     db.session.add(blog)
     db.session.commit()
-    return redirect(url_for('home'))
+    return redirect(url_for("home"))
+
+
+@app.route("/blog/delete/<int:blog_id>")
+def delete_blog(blog_id):
+    blog = Blogs.query.filter_by(id=blog_id).first()
+    if blog:
+        db.session.delete(blog)
+        db.session.commit()
+        return redirect(url_for("home"))
+    return "<h1>404: Blog not found</h1>"
+
 
 app.run(debug=True)
