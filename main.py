@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for
+from flask import Flask, redirect, render_template, url_for, request
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -31,12 +31,18 @@ def blog(blog_id):
     return f"<h1>This is Blog {blog_id}</h1>"
 
 
-@app.route("/blog/create")
+@app.route("/blog/create", methods=["GET", "POST"])
 def create_blog():
-    blog = Blogs(title="Blog 1", subtitle="Subtitle of blog 1", thumbnail="img11.jpg")
-    db.session.add(blog)
-    db.session.commit()
-    return redirect(url_for("home"))
+    if request.method == "POST":
+        blog = Blogs(
+            title=request.form.get("title"),
+            subtitle=request.form.get("subtitle"),
+            description=request.form.get("description"),
+            thumbnail="img11.jpg",
+        )
+        db.session.add(blog)
+        db.session.commit()
+    return render_template("create_blog.html")
 
 
 @app.route("/blog/delete/<int:blog_id>")
