@@ -24,13 +24,13 @@
         <!-- Nav -->
         <nav id="nav">
           <ul>
-            <li class="current"><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="/blogs">Blogs</a></li>
-            <li><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
+            <li class="{% block home %}{%endblock%}"><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="{% block blogs %}{%endblock%}"><a href="/blogs">Blogs</a></li>
+            <li class="{% block createblog %}{%endblock%}"><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
             {% if current_user.is_authenticated %}
-            <li><a href="/logout">{{ current_user.name }}</a></li>
+            <li class="{% block profile %}{%endblock%}"><a href="{{ url_for('profile') }}">{{ current_user.name }}</a></li>
             {% else %}
-            <li><a href="/login">Login</a></li>
+            <li class="{% block login %}{%endblock%}"><a href="/login">Login</a></li>
             {% endif %}
           </ul>
         </nav>

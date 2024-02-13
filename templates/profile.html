@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block main %}
 
 <div style="display: none;">
-    {% block home %}active{% endblock %}
+    {% block profile %}active{% endblock %}
 </div>
 
 <!-- Banner -->
@@ -9,13 +9,14 @@
     <div id="banner" class="box container">
         <div class="row">
             <div class="col-7 col-12-medium">
-                <h2>Hi. This is FLIO.</h2>
-                <p>It's a free Blogging website by Aworkaround</p>
+                <h2>{{ current_user.name }}</h2>
+                <p>{{ current_user.email }}</p>
+                <a href="{{ url_for('logout') }}" style="color: red; text-decoration: none;">Logout</a>
             </div>
             <div class="col-5 col-12-medium">
                 <ul>
-                    <li><a href="{{ url_for('signup') }}" class="button large icon solid fa-arrow-circle-right">Register Now</a></li>
-                    <li><a href="{{ url_for('login') }}" class="button alt large icon solid fa-question-circle">Login</a></li>
+                    <li><a href="{{ url_for('create_blog') }}" class="button large icon solid fa-arrow-circle-right">Create New Blog</a></li>
+                    <li><a href="{{ url_for('blogs') }}" class="button alt large icon solid fa-question-circle">Browse Blogs</a></li>
                 </ul>
             </div>
         </div>

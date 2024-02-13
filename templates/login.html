@@ -1,5 +1,9 @@
 {% extends "base.html" %} {% block main %}
 
+<div style="display: none;">
+    {% block login %}active{% endblock %}
+</div>
+
 <!-- Banner -->
 <div id="banner-wrapper">
     <div id="banner" class="box container">
@@ -10,8 +14,10 @@
             </div>
             <div class="col-5 col-12-medium">
                 <form action="" method="POST">
-                    <input style="margin-bottom: 16px;" type="email" name="email" placeholder="Email Address" required/>
-                    <input style="margin-bottom: 16px;" type="password" name="password" placeholder="New Password" required/>
+                    <input style="margin-bottom: 16px;" type="email" name="email" placeholder="Email Address"
+                        required />
+                    <input style="margin-bottom: 16px;" type="password" name="password" placeholder="New Password"
+                        required />
                     <input class="button" style="margin-bottom: 16px;" type="submit" value="Login">
                     <input class="button alt" type="reset" value="Clear" />
                 </form>

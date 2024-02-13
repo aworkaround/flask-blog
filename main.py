@@ -124,5 +124,14 @@ def logout():
     logout_user()
     return redirect(url_for('home'))
 
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('profile.html')  
+
+@app.route('/blogs')
+def blogs():
+    return 'All Blogs'
+
 
 app.run(debug=True)
