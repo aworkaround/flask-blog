@@ -1,0 +1,23 @@
+{% extends "base.html" %} {% block main %}
+
+<!-- Banner -->
+<div id="banner-wrapper">
+    <div id="banner" class="box container">
+        <div class="row">
+            <div class="col-7 col-12-medium">
+                <h2>Hi. You can Edit Blog here.</h2>
+                <p>Be sure that your blog does not hurt anyone's sentiments and respect privacy.</p>
+            </div>
+            <div class="col-5 col-12-medium">
+                <form action="" method="POST">
+                    <input style="margin-bottom: 16px;" type="text" name="title" placeholder="Title" value="{{ blog.title }}"/>
+                    <input style="margin-bottom: 16px;" type="text" name="subtitle" placeholder="Subtitle" value="{{ blog.subtitle }}"/>
+                    <textarea style="margin-bottom: 16px;" type="text" name="description" placeholder="Description">{{ blog.description }}</textarea>
+                    <input class="button" style="margin-bottom: 16px;" type="submit" value="Update Blog">
+                    <input class="button alt" type="reset" value="Clear" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

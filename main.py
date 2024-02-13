@@ -45,6 +45,21 @@ def create_blog():
     return render_template("create_blog.html")
 
 
+@app.route("/blog/edit/<int:blog_id>", methods=["GET", "POST"])
+def edit_blog(blog_id):
+    blog = Blogs.query.filter_by(id=blog_id).first()
+    if not blog:
+        return "<h1>404: Blog not found</h1>"
+    if request.method == "POST":
+        blog.title = request.form.get("title")
+        blog.subtitle = request.form.get("subtitle")
+        blog.description = request.form.get("description")
+        blog.thumbnail = "img11.jpg"
+        db.session.commit()
+        return redirect(url_for('home'))
+    return render_template("edit_blog.html", blog=blog)
+
+
 @app.route("/blog/delete/<int:blog_id>")
 def delete_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
