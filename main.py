@@ -69,5 +69,12 @@ def delete_blog(blog_id):
         return redirect(url_for("home"))
     return "<h1>404: Blog not found</h1>"
 
+@app.route("/profile")
+def profile():
+    return render_template("profile.html")
+
+@app.route("/blogs")
+def blogs():
+    return render_template("blogs.html")
 
 app.run(debug=True)

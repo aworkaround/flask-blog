@@ -24,10 +24,10 @@
         <!-- Nav -->
         <nav id="nav">
           <ul>
-            <li class="current"><a href="{{ url_for('home') }}">Home</a></li>
-            <li><a href="/blogs">Blogs</a></li>
-            <li><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
-            <li><a href="/profile">Profile</a></li>
+            <li class="{% block home %}{% endblock %}"><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="{% block blogs %}{% endblock %}"><a href="/blogs">Blogs</a></li>
+            <li class="{% block createblog %}{% endblock %}"><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
+            <li class="{% block profile %}{% endblock %}"><a href="/profile">Profile</a></li>
           </ul>
         </nav>
 
