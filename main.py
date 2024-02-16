@@ -14,7 +14,14 @@ class Blogs(db.Model):
     subtitle = db.Column(db.String(400), nullable=True)
     description = db.Column(db.Text, nullable=True)
     thumbnail = db.Column(db.String(180), nullable=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
 
+class Profiles(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(200), nullable=False)
+    email = db.Column(db.String(200), nullable=False)
+    password = db.Column(db.String(200), nullable=False)
+    blogs = db.relationship('Blogs', backref='author', lazy=True)
 
 with app.app_context():
     db.create_all()
@@ -76,5 +83,17 @@ def profile():
 @app.route("/blogs")
 def blogs():
     return render_template("blogs.html")
+
+@app.route('/signup', methods=["GET", "POST"])
+def signup():
+    if request.method == "POST":
+        profile = Profiles(
+            full_name=request.form.get("full_name"),
+            password=request.form.get("password"),
+            email=request.form.get("email")
+        )
+        db.session.add(profile)
+        db.session.commit()
+    return render_template("signup.html")
 
 app.run(debug=True)
