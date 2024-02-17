@@ -1,11 +1,20 @@
 from flask import Flask, redirect, render_template, url_for, request
+from flask_login import LoginManager, UserMixin, login_user
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
+app.config["SECRET_KEY"] = '301bafebd87884dedb1e0811c457880d'
 
 db = SQLAlchemy(app)
+login_manager = LoginManager(app)
+login_manager.login_view = 'login'
+login_manager.session_protection = 'strong'
+
+@login_manager.user_loader
+def load_user(user_id):
+    return Profiles.query.get(int(user_id))
 
 
 class Blogs(db.Model):
@@ -16,7 +25,7 @@ class Blogs(db.Model):
     thumbnail = db.Column(db.String(180), nullable=True)
     user_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
 
-class Profiles(db.Model):
+class Profiles(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     full_name = db.Column(db.String(200), nullable=False)
     email = db.Column(db.String(200), nullable=False)
@@ -87,13 +96,28 @@ def blogs():
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
-        profile = Profiles(
+        user = Profiles(
             full_name=request.form.get("full_name"),
             password=request.form.get("password"),
             email=request.form.get("email")
         )
-        db.session.add(profile)
+        db.session.add(user)
         db.session.commit()
+        login_user(user)
+        return redirect(url_for('home'))
+    return render_template("signup.html")
+
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        user = Profiles.query.filter_by(email=request.form.get("email")).first()
+        if not user:
+            return '<h1>User does not exist.</h1>'
+        if request.form.get('password') == user.password:
+            login_user(user)
+            return redirect(url_for('home'))
+        else:
+            return '<h1>Incorrect credentials.</h1>'
     return render_template("signup.html")
 
 app.run(debug=True)
