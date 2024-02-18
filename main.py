@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, url_for, request
-from flask_login import LoginManager, UserMixin, login_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -48,6 +48,7 @@ def blog(blog_id):
 
 
 @app.route("/blog/create", methods=["GET", "POST"])
+@login_required
 def create_blog():
     if request.method == "POST":
         blog = Blogs(
@@ -118,6 +119,11 @@ def login():
             return redirect(url_for('home'))
         else:
             return '<h1>Incorrect credentials.</h1>'
-    return render_template("signup.html")
+    return render_template("login.html")
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('home'))
 
 app.run(debug=True)
