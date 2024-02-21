@@ -27,7 +27,14 @@
             <li class="{% block home %}{% endblock %}"><a href="{{ url_for('home') }}">Home</a></li>
             <li class="{% block blogs %}{% endblock %}"><a href="/blogs">Blogs</a></li>
             <li class="{% block createblog %}{% endblock %}"><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
-            <li class="{% block profile %}{% endblock %}"><a href="/profile">Profile</a></li>
+            {% if current_user.is_authenticated %}
+            <li class="{% block profile %}{% endblock %}"><a href="/profile">{{ current_user.full_name }}</a>
+              <ul>
+                <li><a href="#">Edit Profile</a></li>
+                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+              </ul>
+            </li>
+            {% endif %}
           </ul>
         </nav>
 
