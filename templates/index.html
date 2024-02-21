@@ -14,8 +14,10 @@
             </div>
             <div class="col-5 col-12-medium">
                 <ul>
-                    <li><a href="{{ url_for('signup') }}" class="button large icon solid fa-arrow-circle-right">Register Now</a></li>
-                    <li><a href="{{ url_for('login') }}" class="button alt large icon solid fa-question-circle">Login</a></li>
+                    <li><a href="{{ url_for('signup') }}" class="button large icon solid fa-arrow-circle-right">Register
+                            Now</a></li>
+                    <li><a href="{{ url_for('login') }}"
+                            class="button alt large icon solid fa-question-circle">Login</a></li>
                 </ul>
             </div>
         </div>
@@ -30,9 +32,8 @@
             <!-- Box -->
             <div class="col-4 col-12-medium">
                 <section class="box feature">
-                    <a href="/blog/{{ item.id }}" class="image featured"
-                        ><img src="{{ url_for('static', filename='images/' + item.thumbnail) }}" alt=""
-                    /></a>
+                    <a href="/blog/{{ item.id }}" class="image featured"><img
+                            src="{{ url_for('static', filename='images/' + item.thumbnail) }}" alt="" /></a>
                     <div class="inner">
                         <header>
                             <h2>{{ item.title }}</h2>
@@ -48,5 +49,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

@@ -18,7 +18,7 @@
         <!-- Logo -->
         <div id="logo">
           <h1><a href="{{ url_for('home') }}">Flio</a></h1>
-          <span>a Blogging Website</span>
+          <span>A Blogging Website</span>
         </div>
 
         <!-- Nav -->
@@ -31,7 +31,7 @@
             <li class="{% block profile %}{% endblock %}"><a href="/profile">{{ current_user.full_name }}</a>
               <ul>
                 <li><a href="#">Edit Profile</a></li>
-                <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                <li><a style="color:red;" href="{{ url_for('logout') }}">Logout</a></li>
               </ul>
             </li>
             {% endif %}
@@ -50,7 +50,7 @@
             <div id="copyright">
               <ul class="menu">
                 <li>&copy; FLIO.IN - All rights reserved</li>
-                <li>Developed by <a href="https://github.com/aworkaround/flask-blog">Aworkaround</a></li>
+                <li>Developed by <a href="https://youtube.com/@stayshitshit">StayShikshit</a></li>
               </ul>
             </div>
           </div>

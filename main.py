@@ -12,6 +12,7 @@ login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.session_protection = 'strong'
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return Profiles.query.get(int(user_id))
@@ -23,7 +24,9 @@ class Blogs(db.Model):
     subtitle = db.Column(db.String(400), nullable=True)
     description = db.Column(db.Text, nullable=True)
     thumbnail = db.Column(db.String(180), nullable=True)
-    user_id = db.Column(db.Integer, db.ForeignKey('profiles.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey(
+        'profiles.id'), nullable=False)
+
 
 class Profiles(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -31,6 +34,7 @@ class Profiles(db.Model, UserMixin):
     email = db.Column(db.String(200), nullable=False)
     password = db.Column(db.String(200), nullable=False)
     blogs = db.relationship('Blogs', backref='author', lazy=True)
+
 
 with app.app_context():
     db.create_all()
@@ -85,13 +89,16 @@ def delete_blog(blog_id):
         return redirect(url_for("home"))
     return "<h1>404: Blog not found</h1>"
 
+
 @app.route("/profile")
 def profile():
     return render_template("profile.html")
 
+
 @app.route("/blogs")
 def blogs():
     return render_template("blogs.html")
+
 
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
@@ -107,10 +114,12 @@ def signup():
         return redirect(url_for('home'))
     return render_template("signup.html")
 
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        user = Profiles.query.filter_by(email=request.form.get("email")).first()
+        user = Profiles.query.filter_by(
+            email=request.form.get("email")).first()
         if not user:
             return '<h1>User does not exist.</h1>'
         if request.form.get('password') == user.password:
@@ -120,9 +129,11 @@ def login():
             return '<h1>Incorrect credentials.</h1>'
     return render_template("login.html")
 
+
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('home'))
+
 
 app.run(debug=True)
