@@ -1,5 +1,5 @@
 from flask import Flask, redirect, render_template, url_for, request
-from flask_login import LoginManager, UserMixin, login_user, logout_user
+from flask_login import LoginManager, UserMixin, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
@@ -52,6 +52,7 @@ def blog(blog_id):
 
 
 @app.route("/blog/create", methods=["GET", "POST"])
+@login_required
 def create_blog():
     if request.method == "POST":
         blog = Blogs(
@@ -59,6 +60,7 @@ def create_blog():
             subtitle=request.form.get("subtitle"),
             description=request.form.get("description"),
             thumbnail="img11.jpg",
+            user_id = current_user.id
         )
         db.session.add(blog)
         db.session.commit()
@@ -66,6 +68,7 @@ def create_blog():
 
 
 @app.route("/blog/edit/<int:blog_id>", methods=["GET", "POST"])
+@login_required
 def edit_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
     if not blog:
@@ -81,6 +84,7 @@ def edit_blog(blog_id):
 
 
 @app.route("/blog/delete/<int:blog_id>")
+@login_required
 def delete_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
     if blog:
@@ -91,6 +95,7 @@ def delete_blog(blog_id):
 
 
 @app.route("/profile")
+@login_required
 def profile():
     return render_template("profile.html")
 
@@ -124,6 +129,9 @@ def login():
             return '<h1>User does not exist.</h1>'
         if request.form.get('password') == user.password:
             login_user(user)
+            next_page = request.args.get('next')
+            if next_page:
+                return redirect(next_page)
             return redirect(url_for('home'))
         else:
             return '<h1>Incorrect credentials.</h1>'
@@ -131,6 +139,7 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
