@@ -14,10 +14,17 @@
             </div>
             <div class="col-5 col-12-medium">
                 <ul>
+                    {% if current_user.is_authenticated %}
+                    <li><a href="{{ url_for('create_blog') }}" class="button large icon solid fa-arrow-circle-right">Create
+                            Blog</a></li>
+                    <li><a href="{{ url_for('blogs') }}"
+                            class="button alt large icon solid fa-question-circle">All Blogs</a></li>
+                    {% else %}
                     <li><a href="{{ url_for('signup') }}" class="button large icon solid fa-arrow-circle-right">Register
                             Now</a></li>
                     <li><a href="{{ url_for('login') }}"
                             class="button alt large icon solid fa-question-circle">Login</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </div>

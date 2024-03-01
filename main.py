@@ -71,6 +71,8 @@ def create_blog():
 @login_required
 def edit_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
+    if current_user.id != blog.author.id:
+        return '<h1>You are unauthorized to perform this operation.</h1>'
     if not blog:
         return "<h1>404: Blog not found</h1>"
     if request.method == "POST":
@@ -87,6 +89,8 @@ def edit_blog(blog_id):
 @login_required
 def delete_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
+    if current_user.id != blog.author.id:
+        return '<h1>You are unauthorized to perform this operation.</h1>'
     if blog:
         db.session.delete(blog)
         db.session.commit()
