@@ -40,6 +40,15 @@
 
       </header>
     </div>
+    <div style="display: none;">
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div id="alert" class="{{ category }}">{{ message }}</div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+    </div>
     {% block main %}
     {% endblock %}
     <!-- Footer -->
@@ -68,7 +77,15 @@
   <script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/util.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  <script>
+    let alertBox = document.getElementById('alert');
+    swal({
+      title: alertBox.innerText,
+      icon: alertBox.className,
+      button: "Close",
+    });
+  </script>
 </body>
 
 </html>

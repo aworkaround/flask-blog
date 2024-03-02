@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for, request
+from flask import Flask, flash, redirect, render_template, url_for, request
 from flask_login import LoginManager, UserMixin, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
@@ -43,6 +43,7 @@ with app.app_context():
 @app.route("/")
 def home():
     blogs = Blogs.query.all()
+    flash('Hello World!', 'success')
     return render_template("index.html", blogs=blogs)
 
 
