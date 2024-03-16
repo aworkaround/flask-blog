@@ -43,7 +43,6 @@ with app.app_context():
 @app.route("/")
 def home():
     blogs = Blogs.query.all()
-    flash('Hello World!', 'success')
     return render_template("index.html", blogs=blogs)
 
 
@@ -65,6 +64,7 @@ def create_blog():
         )
         db.session.add(blog)
         db.session.commit()
+        flash('Blog successfully created!', 'success')
     return render_template("create_blog.html")
 
 
@@ -73,7 +73,8 @@ def create_blog():
 def edit_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
     if current_user.id != blog.author.id:
-        return '<h1>You are unauthorized to perform this operation.</h1>'
+        flash('You are unauthorized to perform this operation', 'error')
+        return redirect(url_for('home'))
     if not blog:
         return "<h1>404: Blog not found</h1>"
     if request.method == "POST":
@@ -82,6 +83,7 @@ def edit_blog(blog_id):
         blog.description = request.form.get("description")
         blog.thumbnail = "img11.jpg"
         db.session.commit()
+        flash('Blog successfully edited!', 'success')
         return redirect(url_for('home'))
     return render_template("edit_blog.html", blog=blog)
 
@@ -91,10 +93,12 @@ def edit_blog(blog_id):
 def delete_blog(blog_id):
     blog = Blogs.query.filter_by(id=blog_id).first()
     if current_user.id != blog.author.id:
-        return '<h1>You are unauthorized to perform this operation.</h1>'
+        flash('You are unauthorized to perform this operation', 'error')
+        return redirect(url_for('home'))
     if blog:
         db.session.delete(blog)
         db.session.commit()
+        flash('Blog successfully deleted!', 'success')
         return redirect(url_for("home"))
     return "<h1>404: Blog not found</h1>"
 
@@ -121,25 +125,31 @@ def signup():
         db.session.add(user)
         db.session.commit()
         login_user(user)
+        flash('New used created successfully. You are logged now!', 'success')
         return redirect(url_for('home'))
     return render_template("signup.html")
 
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
+    next_page = request.args.get('next')
     if request.method == "POST":
         user = Profiles.query.filter_by(
             email=request.form.get("email")).first()
         if not user:
-            return '<h1>User does not exist.</h1>'
+            flash('User does not exist!', 'error')
+            return render_template("login.html")
         if request.form.get('password') == user.password:
             login_user(user)
-            next_page = request.args.get('next')
-            if next_page:
+            if next_page: 
                 return redirect(next_page)
+            flash('You are logged now!', 'success')
             return redirect(url_for('home'))
         else:
-            return '<h1>Incorrect credentials.</h1>'
+            flash('Incorrect Credentials!', 'error')
+            return render_template("login.html")
+    if next_page:
+        flash('You need to be logged in first!', 'info')
     return render_template("login.html")
 
 
@@ -147,6 +157,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash('You are logged out successfully!', 'success')
     return redirect(url_for('home'))
 
 
