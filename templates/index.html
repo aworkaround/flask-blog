@@ -54,6 +54,10 @@
             </div>
             {% endfor %}
         </div>
+        <div class="row">
+            <a style="margin: 4em 1em" href="/?page={{ blogs.prev_num }}" class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
+            <a style="margin: 4em 1em" href="/?page={{ blogs.next_num }}" class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
+        </div>
     </div>
 </div>
 {% endblock %}

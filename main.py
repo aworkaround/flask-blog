@@ -42,7 +42,8 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    blogs = Blogs.query.all()
+    page_no = int(request.args.get('page')) if request.args.get('page') else 1
+    blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
     return render_template("index.html", blogs=blogs)
 
 
