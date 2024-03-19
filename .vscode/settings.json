@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/7b4b70c5-4f14-4371-b779-4b4a14599629/resourceGroups/appsvc_linux_centralus/providers/Microsoft.Web/sites/flaskdemo-app",
+    "appService.deploySubpath": "."
+}
