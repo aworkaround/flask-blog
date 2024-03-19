@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block main %}
 
 <div style="display: none;">
-    {% block home %}current{% endblock %}
+    {% block blogs %}current{% endblock %}
 </div>
 
 <!-- Banner -->
@@ -9,23 +9,14 @@
     <div id="banner" class="box container">
         <div class="row">
             <div class="col-7 col-12-medium">
-                <h2>Hi. This is FLIO.</h2>
-                <p>It's a free Blogging website by Aworkaround</p>
+                <h2>Blogs</h2>
+                <p>Search by keyword</p>
             </div>
             <div class="col-5 col-12-medium">
-                <ul>
-                    {% if current_user.is_authenticated %}
-                    <li><a href="{{ url_for('create_blog') }}" class="button large icon solid fa-arrow-circle-right">Create
-                            Blog</a></li>
-                    <li><a href="{{ url_for('blogs') }}"
-                            class="button alt large icon solid fa-question-circle">All Blogs</a></li>
-                    {% else %}
-                    <li><a href="{{ url_for('signup') }}" class="button large icon solid fa-arrow-circle-right">Register
-                            Now</a></li>
-                    <li><a href="{{ url_for('login') }}"
-                            class="button alt large icon solid fa-question-circle">Login</a></li>
-                    {% endif %}
-                </ul>
+                <form action="/blogs/query" method="get">
+                    <input type="text" name="keyword" id="keyword" />
+                    <input type="submit" value="Search" />
+                </form>
             </div>
         </div>
     </div>
@@ -55,8 +46,10 @@
             {% endfor %}
         </div>
         <div class="row">
-            <a style="margin: 4em 1em" href="/?page={{ blogs.prev_num }}" class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
-            <a style="margin: 4em 1em" href="/?page={{ blogs.next_num }}" class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
+            <a style="margin: 4em 1em" href="{{ url_for('blogs_query', page=blogs.prev_num, keyword=keyword) }}"
+                class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
+            <a style="margin: 4em 1em" href="{{ url_for('blogs_query', page=blogs.next_num, keyword=keyword) }}"
+                class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
         </div>
     </div>
 </div>

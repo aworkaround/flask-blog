@@ -1,7 +1,7 @@
 {% extends "base.html" %} {% block main %}
 
 <div style="display: none;">
-    {% block profile %}active{% endblock %}
+    {% block profile %}current{% endblock %}
 </div>
 
 <!-- Banner -->
@@ -9,45 +9,19 @@
     <div id="banner" class="box container">
         <div class="row">
             <div class="col-7 col-12-medium">
-                <h2>{{ current_user.name }}</h2>
+                <h2>Profile: {{ current_user.full_name }}</h2>
                 <p>{{ current_user.email }}</p>
-                <a href="{{ url_for('logout') }}" style="color: red; text-decoration: none;">Logout</a>
             </div>
             <div class="col-5 col-12-medium">
-                <ul>
-                    <li><a href="{{ url_for('create_blog') }}" class="button large icon solid fa-arrow-circle-right">Create New Blog</a></li>
-                    <li><a href="{{ url_for('blogs') }}" class="button alt large icon solid fa-question-circle">Browse Blogs</a></li>
-                </ul>
+                <form action="" method="POST">
+                    <input style="margin-bottom: 16px;" type="text" name="title" placeholder="Title"/>
+                    <input style="margin-bottom: 16px;" type="text" name="subtitle" placeholder="Subtitle"/>
+                    <textarea style="margin-bottom: 16px;" type="text" name="description" placeholder="Description"></textarea>
+                    <input class="button" style="margin-bottom: 16px;" type="submit" value="Create Blog">
+                    <input class="button alt" type="reset" value="Clear" />
+                </form>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Features -->
-<div id="features-wrapper">
-    <div class="container">
-        <div class="row">
-            {% for item in blogs %}
-            <!-- Box -->
-            <div class="col-4 col-12-medium">
-                <section class="box feature">
-                    <a href="/blog/{{ item.id }}" class="image featured"
-                        ><img src="{{ url_for('static', filename='images/' + item.thumbnail) }}" alt=""
-                    /></a>
-                    <div class="inner">
-                        <header>
-                            <h2>{{ item.title }}</h2>
-                            <p>{{ item.subtitle }}</p>
-                            <a href="{{url_for('delete_blog', blog_id=item.id)}}" style="color: red">Delete</a>
-                            <a href="{{url_for('edit_blog', blog_id=item.id)}}">Edit</a>
-                        </header>
-                        <p>{{ item.description }}</p>
-                    </div>
-                </section>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-</div>
-
 {% endblock %}

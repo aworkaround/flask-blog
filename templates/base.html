@@ -6,6 +6,11 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}" />
+  <style>
+    .disabled-btn {
+      pointer-events: none;
+    }
+  </style>
 </head>
 
 <body class="is-preload homepage">
@@ -18,19 +23,22 @@
         <!-- Logo -->
         <div id="logo">
           <h1><a href="{{ url_for('home') }}">Flio</a></h1>
-          <span>a Blogging Website</span>
+          <span>A Blogging Website</span>
         </div>
 
         <!-- Nav -->
         <nav id="nav">
           <ul>
-            <li class="{% block home %}{%endblock%}"><a href="{{ url_for('home') }}">Home</a></li>
-            <li class="{% block blogs %}{%endblock%}"><a href="/blogs">Blogs</a></li>
-            <li class="{% block createblog %}{%endblock%}"><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
+            <li class="{% block home %}{% endblock %}"><a href="{{ url_for('home') }}">Home</a></li>
+            <li class="{% block blogs %}{% endblock %}"><a href="/blogs">Blogs</a></li>
+            <li class="{% block createblog %}{% endblock %}"><a href="{{ url_for('create_blog') }}">Create Blog</a></li>
             {% if current_user.is_authenticated %}
-            <li class="{% block profile %}{%endblock%}"><a href="{{ url_for('profile') }}">{{ current_user.name }}</a></li>
-            {% else %}
-            <li class="{% block login %}{%endblock%}"><a href="/login">Login</a></li>
+            <li class="{% block profile %}{% endblock %}"><a href="/profile">{{ current_user.full_name }}</a>
+              <ul>
+                <li><a href="#">Edit Profile</a></li>
+                <li><a style="color:red;" href="{{ url_for('logout') }}">Logout</a></li>
+              </ul>
+            </li>
             {% endif %}
           </ul>
         </nav>
@@ -47,7 +55,7 @@
             <div id="copyright">
               <ul class="menu">
                 <li>&copy; FLIO.IN - All rights reserved</li>
-                <li>Developed by <a href="https://github.com/aworkaround/flask-blog">Aworkaround</a></li>
+                <li>Developed by <a href="https://youtube.com/@stayshitshit">StayShikshit</a></li>
               </ul>
             </div>
           </div>
@@ -65,7 +73,20 @@
   <script src="{{ url_for('static', filename='js/breakpoints.min.js') }}"></script>
   <script src="{{ url_for('static', filename='js/util.js') }}"></script>
   <script src="{{ url_for('static', filename='js/main.js') }}"></script>
-
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <script>
+          swal({
+            title: '{{ message }}',
+            icon: '{{ category }}',
+            button: "Close",
+          });
+        </script>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
 </body>
 
 </html>
