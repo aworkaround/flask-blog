@@ -10,17 +10,46 @@
         <div class="row">
             <div class="col-7 col-12-medium">
                 <h2>Blogs</h2>
-                <p>All Public Blogs can be found here.</p>
+                <p>Search by keyword</p>
             </div>
             <div class="col-5 col-12-medium">
-                <form action="" method="POST">
-                    <input style="margin-bottom: 16px;" type="text" name="title" placeholder="Title"/>
-                    <input style="margin-bottom: 16px;" type="text" name="subtitle" placeholder="Subtitle"/>
-                    <textarea style="margin-bottom: 16px;" type="text" name="description" placeholder="Description"></textarea>
-                    <input class="button" style="margin-bottom: 16px;" type="submit" value="Create Blog">
-                    <input class="button alt" type="reset" value="Clear" />
+                <form action="/blogs/query" method="get">
+                    <input type="text" name="keyword" id="keyword" />
+                    <input type="submit" value="Search" />
                 </form>
             </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features -->
+<div id="features-wrapper">
+    <div class="container">
+        <div class="row">
+            {% for item in blogs %}
+            <!-- Box -->
+            <div class="col-4 col-12-medium">
+                <section class="box feature">
+                    <a href="/blog/{{ item.id }}" class="image featured"><img
+                            src="{{ url_for('static', filename='images/' + item.thumbnail) }}" alt="" /></a>
+                    <div class="inner">
+                        <header>
+                            <h2>{{ item.title }}</h2>
+                            <p>{{ item.subtitle }}</p>
+                            <a href="{{url_for('delete_blog', blog_id=item.id)}}" style="color: red">Delete</a>
+                            <a href="{{url_for('edit_blog', blog_id=item.id)}}">Edit</a>
+                        </header>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </section>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <a style="margin: 4em 1em" href="{{ url_for('blogs_query', page=blogs.prev_num, keyword=keyword) }}"
+                class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
+            <a style="margin: 4em 1em" href="{{ url_for('blogs_query', page=blogs.next_num, keyword=keyword) }}"
+                class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
         </div>
     </div>
 </div>

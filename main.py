@@ -112,7 +112,16 @@ def profile():
 
 @app.route("/blogs")
 def blogs():
-    return render_template("blogs.html")
+    page_no = request.args.get('page', 1, type=int)
+    blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
+    return render_template("blogs.html", blogs=blogs)
+
+@app.route('/blogs/query')
+def blogs_query():
+    page_no = request.args.get('page', 1, type=int)
+    keyword = f'%{request.args.get('keyword')}%'
+    blogs = Blogs.query.filter(Blogs.title.like(keyword)).paginate(page=page_no, max_per_page=6)
+    return render_template("blogs.html", blogs=blogs, keyword=request.args.get('keyword'))
 
 
 @app.route('/signup', methods=["GET", "POST"])
