@@ -42,10 +42,22 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    page_no = int(request.args.get('page')) if request.args.get('page') else 1
+    page_no = request.args.get('page', 1, type=int)
     blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
     return render_template("index.html", blogs=blogs)
 
+@app.route("/blogs")
+def blogs():
+    page_no = request.args.get('page', 1, type=int)
+    blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
+    return render_template("blogs.html", blogs=blogs)
+
+@app.route('/query')
+def query():
+    keyword = request.args.get('keyword')
+    page_no = request.args.get('page', 1, type=int)
+    blogs = Blogs.query.filter(Blogs.title.like(f'%{keyword}%')).paginate(page=page_no, max_per_page=6)
+    return render_template("blogs.html", blogs=blogs, keyword=keyword)
 
 @app.route("/blog/<int:blog_id>")
 def blog(blog_id):
@@ -108,11 +120,6 @@ def delete_blog(blog_id):
 @login_required
 def profile():
     return render_template("profile.html")
-
-
-@app.route("/blogs")
-def blogs():
-    return render_template("blogs.html")
 
 
 @app.route('/signup', methods=["GET", "POST"])
