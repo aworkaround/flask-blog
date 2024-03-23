@@ -167,6 +167,3 @@ def logout():
     logout_user()
     flash('You are logged out successfully!', 'success')
     return redirect(url_for('home'))
-
-
-app.run(debug=True)
