@@ -43,10 +43,22 @@ with app.app_context():
 
 @app.route("/")
 def home():
-    page_no = int(request.args.get('page')) if request.args.get('page') else 1
+    page_no = request.args.get('page', 1, type=int)
     blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
     return render_template("index.html", blogs=blogs)
 
+@app.route("/blogs")
+def blogs():
+    page_no = request.args.get('page', 1, type=int)
+    blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
+    return render_template("blogs.html", blogs=blogs)
+
+@app.route('/query')
+def query():
+    keyword = request.args.get('keyword')
+    page_no = request.args.get('page', 1, type=int)
+    blogs = Blogs.query.filter(Blogs.title.like(f'%{keyword}%')).paginate(page=page_no, max_per_page=6)
+    return render_template("blogs.html", blogs=blogs, keyword=keyword)
 
 @app.route("/blog/<int:blog_id>")
 def blog(blog_id):
@@ -111,20 +123,6 @@ def profile():
     return render_template("profile.html")
 
 
-@app.route("/blogs")
-def blogs():
-    page_no = request.args.get('page', 1, type=int)
-    blogs = Blogs.query.paginate(page=page_no, max_per_page=6)
-    return render_template("blogs.html", blogs=blogs)
-
-@app.route('/blogs/query')
-def blogs_query():
-    page_no = request.args.get('page', 1, type=int)
-    keyword = f'%{request.args.get('keyword')}%'
-    blogs = Blogs.query.filter(Blogs.title.like(keyword)).paginate(page=page_no, max_per_page=6)
-    return render_template("blogs.html", blogs=blogs, keyword=request.args.get('keyword'))
-
-
 @app.route('/signup', methods=["GET", "POST"])
 def signup():
     if request.method == "POST":
@@ -170,6 +168,3 @@ def logout():
     logout_user()
     flash('You are logged out successfully!', 'success')
     return redirect(url_for('home'))
-
-
-app.run(debug=True)

@@ -10,12 +10,12 @@
         <div class="row">
             <div class="col-7 col-12-medium">
                 <h2>Blogs</h2>
-                <p>Search by keyword</p>
+                <p>Filter blogs by Title</p>
             </div>
             <div class="col-5 col-12-medium">
-                <form action="/blogs/query" method="get">
-                    <input type="text" name="keyword" id="keyword" />
-                    <input type="submit" value="Search" />
+                <form action="/query">
+                    <input type="text" name="keyword" id="keyword" style="margin-bottom: 1em;"/>
+                    <input type="submit" value="Search">
                 </form>
             </div>
         </div>
@@ -46,10 +46,13 @@
             {% endfor %}
         </div>
         <div class="row">
-            <a style="margin: 4em 1em" href="{{ url_for('blogs_query', page=blogs.prev_num, keyword=keyword) }}"
-                class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
-            <a style="margin: 4em 1em" href="{{ url_for('blogs_query', page=blogs.next_num, keyword=keyword) }}"
-                class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
+            {% if keyword %}
+            <a style="margin: 4em 1em" href="{{ url_for('query', keyword=keyword, page=blogs.prev_num) }}" class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
+            <a style="margin: 4em 1em" href="{{ url_for('query', keyword=keyword, page=blogs.next_num) }}" class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
+            {% else %}
+            <a style="margin: 4em 1em" href="{{ url_for('blogs', page=blogs.prev_num) }}" class="button {% if blogs.has_prev == False %}alt disabled-btn{% endif %}">Previous page</a>
+            <a style="margin: 4em 1em" href="{{ url_for('blogs', page=blogs.next_num) }}" class="button {% if blogs.has_next == False %}alt disabled-btn{% endif %}">Next page</a>
+            {% endif %}
         </div>
     </div>
 </div>
