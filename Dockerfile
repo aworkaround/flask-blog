@@ -6,5 +6,4 @@ COPY . /app
 RUN pip install poetry
 RUN poetry install
 
-# CMD ["poetry", "run", "gunicorn", "wsgi:app"]
-CMD ["sleep", "100000"]
+CMD ["poetry", "run", "gunicorn", "wsgi:app"]
