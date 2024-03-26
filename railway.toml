@@ -1,5 +1,5 @@
 [build]
-builder = "poetry"
+builder = "NIXPACKS"
 buildCommand = "poetry install"
 
 [deploy]
