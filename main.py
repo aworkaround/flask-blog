@@ -170,4 +170,6 @@ def logout():
     return redirect(url_for('home'))
 
 
-app.run(debug=True)
+DEBUG_MODE = os.getenv('DEBUG_MODE') == 'True'
+
+app.run(debug=DEBUG_MODE)
