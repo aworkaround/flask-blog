@@ -1,0 +1,9 @@
+[build]
+builder = "nixpacks"
+buildCommand = "poetry install"
+
+[deploy]
+startCommand = "poetry run gunicorn main:app"
+healthcheckPath = "/"
+healthcheckTimeout = 100
+restartPolicyType = "never"

@@ -10,6 +10,8 @@ python = "^3.12"
 flask = "^3.0.1"
 flask-sqlalchemy = "^3.1.1"
 flask-login = "^0.6.3"
+gunicorn = "^21.2.0"
+psycopg2-binary = "^2.9.9"
 
 
 [build-system]
