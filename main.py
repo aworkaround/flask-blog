@@ -172,4 +172,5 @@ def logout():
 
 DEBUG_MODE = os.getenv('DEBUG_MODE') == 'True'
 
-app.run(debug=DEBUG_MODE)
+if __name__ == '__main__':
+    app.run(debug=DEBUG_MODE)
