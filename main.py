@@ -1,11 +1,12 @@
+import os
 from flask import Flask, flash, redirect, render_template, url_for, request
 from flask_login import LoginManager, UserMixin, current_user, login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db.sqlite"
-app.config["SECRET_KEY"] = '301bafebd87884dedb1e0811c457880d'
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv('DATABSE_URL')
+app.config["SECRET_KEY"] = os.getenv('SECRET_KEY')
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -168,5 +169,7 @@ def logout():
     flash('You are logged out successfully!', 'success')
     return redirect(url_for('home'))
 
+DEBUG_MODE = os.getenv('DEBUG_MODE') == 'True'
 
-app.run(debug=True)
+if __name__ == '__main__':
+    app.run(debug=DEBUG_MODE)
